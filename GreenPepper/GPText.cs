@@ -4,11 +4,11 @@ namespace GreenPepper;
 
 public struct GPText
 {
-    private GPLine[] lines;
+    public readonly List<GPLine> lines;
 
     public GPText(params GPLine[] lines)
     {
-        this.lines = lines;
+        this.lines = lines.ToList();
     }
 
     public string Build(int width, int height)
@@ -17,7 +17,7 @@ public struct GPText
 
         for (int i = 0; i < height; i++)
         {
-            if (lines.Length > i) builder.Append(lines[i].Build(width));
+            if (lines.Count > i) builder.Append(lines[i].Build(width));
             else builder.Append(new GPLine().Build(width));
         }
 

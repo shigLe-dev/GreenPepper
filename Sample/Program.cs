@@ -1,4 +1,13 @@
-﻿using GreenPepper;
+﻿using System.Text;
+using Kodnix.Character;
+using GreenPepper;
 
-Window window = new(Console.WindowWidth, Console.WindowHeight);
-Console.Write(window.Build());
+Console.OutputEncoding = Encoding.UTF8;
+
+
+Console.Write(text.Build(Console.WindowWidth, 1));
+
+while (true)
+{
+    Console.WriteLine(EastAsianWidth.GetLength(Console.ReadKey().KeyChar));
+}

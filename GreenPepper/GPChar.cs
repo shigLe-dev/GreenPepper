@@ -1,4 +1,5 @@
 using Kodnix.Character;
+
 namespace GreenPepper;
 
 public struct GPChar

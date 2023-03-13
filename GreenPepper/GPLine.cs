@@ -4,7 +4,7 @@ namespace GreenPepper;
 
 public struct GPLine
 {
-    private List<GPChar> chars;
+    public readonly List<GPChar> chars;
 
     public GPLine()
     {

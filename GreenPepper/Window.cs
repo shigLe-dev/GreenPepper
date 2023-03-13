@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace GreenPepper;
+﻿namespace GreenPepper;
 
 public class Window
 {
@@ -13,18 +11,20 @@ public class Window
         this.height = height;
     }
 
-    public string Build()
+    public GPText Build()
     {
-        StringBuilder builder = new();
+        GPLine[] lines = new GPLine[height];
 
         for (int y = 0; y < height; y++)
         {
+            List<GPChar> chars = new();
             for (int x = 0; x < width; x++)
             {
-                builder.Append(' ');
+                chars.Add(new("●"));
             }
+            lines[y] = new(chars);
         }
 
-        return builder.ToString();
+        return new(lines);
     }
 }

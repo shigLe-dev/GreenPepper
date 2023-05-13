@@ -5,31 +5,31 @@ public class HorizontalContainer : IDrawer
     private readonly IDrawer leftDrawer;
     private readonly IDrawer rightDrawer;
 
-    public HorizontalContainer(IDrawer rightDrawer, IDrawer leftDrawer)
+    public HorizontalContainer(IDrawer leftDrawer, IDrawer rightDrawer)
     {
-        this.rightDrawer = rightDrawer;
         this.leftDrawer = leftDrawer;
+        this.rightDrawer = rightDrawer;
     }
 
     public IEnumerable<char> Draw(int x, int y, int width, int height)
     {
-        var rightX = x;
-        var rightY = y;
-        var rightWidth = width / 2;
-        var rightHeight = height;
-
-        var leftX = rightWidth + 1;
+        var leftX = x;
         var leftY = y;
-        var leftWidth = rightWidth + 1;
+        var leftWidth = width / 2;
         var leftHeight = height;
 
-        var rightEnumerator = rightDrawer.Draw(rightX, rightY, rightWidth, rightHeight).GetEnumerator();
+        var rightX = x + leftWidth;
+        var rightY = y;
+        var rightWidth = width - leftWidth;
+        var rightHeight = height;
+
         var leftEnumerator = leftDrawer.Draw(leftX, leftY, leftWidth, leftHeight).GetEnumerator();
+        var rightEnumerator = rightDrawer.Draw(rightX, rightY, rightWidth, rightHeight).GetEnumerator();
 
         for (var currentY = 0; currentY < height; currentY++)
         for (var currentX = 0; currentX < width; currentX++)
         {
-            var currentEnumerator = currentX < rightWidth ? rightEnumerator : leftEnumerator;
+            var currentEnumerator = currentX < leftWidth ? leftEnumerator : rightEnumerator;
             currentEnumerator.MoveNext();
             yield return currentEnumerator.Current;
         }

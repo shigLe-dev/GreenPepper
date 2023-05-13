@@ -6,7 +6,7 @@ var greenPepper = new GreenPepper();
 
 while (true)
 {
-    greenPepper.Draw(new HorizontalContainer(
+    greenPepper.Draw(new VerticalContainer(
         new Text("aaaa"),
         new Text("bbbb")
     ));

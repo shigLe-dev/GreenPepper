@@ -1,10 +1,14 @@
 ﻿using ShigLe.TUITools;
 using ShigLe.TUITools.Drawers;
+using ShigLe.TUITools.Drawers.Containers;
 
 var greenPepper = new GreenPepper();
 
 while (true)
 {
-    greenPepper.Draw(new Text("aaa"));
+    greenPepper.Draw(new HorizontalContainer(
+        new Text("aaaa"),
+        new Text("bbbb")
+    ));
     Thread.Sleep(1 / 60);
 }

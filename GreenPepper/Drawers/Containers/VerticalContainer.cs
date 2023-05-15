@@ -23,11 +23,8 @@ public class VerticalContainer : IDrawer, IDrawable
 
     public IEnumerable<char> Draw(Position position, Size size)
     {
-        var upperPosition = position;
-        var upperSize = new Size(size.width, size.height / 2);
-
-        var lowerPosition = new Position(position.x, position.y + upperSize.height);
-        var lowerSize = new Size(size.width, size.height - upperSize.height);
+        CalculateChildTransforms(position, size, upperDrawer.GetConstraints(size), lowerDrawer.GetConstraints(size),
+            out var upperSize, out var lowerSize, out var upperPosition, out var lowerPosition);
 
         var upperEnumerator = upperDrawer.Draw(upperPosition, upperSize).GetEnumerator();
         var lowerEnumerator = lowerDrawer.Draw(lowerPosition, lowerSize).GetEnumerator();
@@ -39,5 +36,19 @@ public class VerticalContainer : IDrawer, IDrawable
             currentEnumerator.MoveNext();
             yield return currentEnumerator.Current;
         }
+    }
+
+    private bool CalculateChildTransforms(Position position, Size size, BoxConstraints rightConstraints,
+        BoxConstraints leftConstraints,
+        out Size upperSize, out Size lowerSize,
+        out Position upperPosition, out Position lowerPosition)
+    {
+        upperPosition = position;
+        upperSize = new Size(size.width, size.height / 2);
+
+        lowerPosition = new Position(position.x, position.y + upperSize.height);
+        lowerSize = new Size(size.width, size.height - upperSize.height);
+
+        return true;
     }
 }

@@ -9,7 +9,7 @@ public class GreenPepper
         Console.SetCursorPosition(0, 0);
         Console.CursorVisible = false;
 
-        using var e = drawer.Draw(0, 0, width, height).GetEnumerator();
+        using var e = drawer.Draw(new Position(0, 0), new Size(width, height)).GetEnumerator();
         var stringBuilder = new StringBuilder();
 
         while (e.MoveNext()) stringBuilder.Append(e.Current);

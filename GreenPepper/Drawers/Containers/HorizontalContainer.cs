@@ -1,35 +1,41 @@
 ﻿namespace ShigLe.TUITools.Drawers.Containers;
 
-public class HorizontalContainer : IDrawer
+public class HorizontalContainer : IDrawer, IDrawable
 {
     private readonly IDrawer leftDrawer;
     private readonly IDrawer rightDrawer;
 
-    public HorizontalContainer(IDrawer leftDrawer, IDrawer rightDrawer)
+    public HorizontalContainer(IDrawable leftDrawer, IDrawable rightDrawer)
     {
-        this.leftDrawer = leftDrawer;
-        this.rightDrawer = rightDrawer;
+        this.leftDrawer = leftDrawer.GetDrawer();
+        this.rightDrawer = rightDrawer.GetDrawer();
     }
 
-    public IEnumerable<char> Draw(int x, int y, int width, int height)
+    public IDrawer GetDrawer()
     {
-        var leftX = x;
-        var leftY = y;
-        var leftWidth = width / 2;
-        var leftHeight = height;
+        return this;
+    }
 
-        var rightX = x + leftWidth;
-        var rightY = y;
-        var rightWidth = width - leftWidth;
-        var rightHeight = height;
+    public BoxConstraints GetConstraints(Size size)
+    {
+        return new BoxConstraints();
+    }
 
-        var leftEnumerator = leftDrawer.Draw(leftX, leftY, leftWidth, leftHeight).GetEnumerator();
-        var rightEnumerator = rightDrawer.Draw(rightX, rightY, rightWidth, rightHeight).GetEnumerator();
+    public IEnumerable<char> Draw(Position position, Size size)
+    {
+        var leftPosition = position;
+        var leftSize = new Size(size.width / 2, size.height);
 
-        for (var currentY = 0; currentY < height; currentY++)
-        for (var currentX = 0; currentX < width; currentX++)
+        var rightPosition = new Position(position.x + leftSize.width, position.y);
+        var rightSize = new Size(size.width - leftSize.width, size.height);
+
+        var leftEnumerator = leftDrawer.Draw(leftPosition, leftSize).GetEnumerator();
+        var rightEnumerator = rightDrawer.Draw(rightPosition, rightSize).GetEnumerator();
+
+        for (var currentY = 0; currentY < size.height; currentY++)
+        for (var currentX = 0; currentX < size.width; currentX++)
         {
-            var currentEnumerator = currentX < leftWidth ? leftEnumerator : rightEnumerator;
+            var currentEnumerator = currentX < leftSize.width ? leftEnumerator : rightEnumerator;
             currentEnumerator.MoveNext();
             yield return currentEnumerator.Current;
         }

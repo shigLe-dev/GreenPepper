@@ -1,35 +1,41 @@
 ﻿namespace ShigLe.TUITools.Drawers.Containers;
 
-public class VerticalContainer : IDrawer
+public class VerticalContainer : IDrawer, IDrawable
 {
     private readonly IDrawer lowerDrawer;
     private readonly IDrawer upperDrawer;
 
-    public VerticalContainer(IDrawer upperDrawer, IDrawer lowerDrawer)
+    public VerticalContainer(IDrawable upperDrawer, IDrawable lowerDrawer)
     {
-        this.upperDrawer = upperDrawer;
-        this.lowerDrawer = lowerDrawer;
+        this.upperDrawer = upperDrawer.GetDrawer();
+        this.lowerDrawer = lowerDrawer.GetDrawer();
     }
 
-    public IEnumerable<char> Draw(int x, int y, int width, int height)
+    public IDrawer GetDrawer()
     {
-        var upperX = x;
-        var upperY = y;
-        var upperWidth = width;
-        var upperHeight = height / 2;
+        return this;
+    }
 
-        var lowerX = x;
-        var lowerY = y + upperHeight;
-        var lowerWidth = width;
-        var lowerHeight = height - upperHeight;
+    public BoxConstraints GetConstraints(Size size)
+    {
+        return new BoxConstraints();
+    }
 
-        var upperEnumerator = upperDrawer.Draw(upperX, upperY, upperWidth, upperHeight).GetEnumerator();
-        var lowerEnumerator = lowerDrawer.Draw(lowerX, lowerY, lowerWidth, lowerHeight).GetEnumerator();
+    public IEnumerable<char> Draw(Position position, Size size)
+    {
+        var upperPosition = position;
+        var upperSize = new Size(size.width, size.height / 2);
 
-        for (var currentY = 0; currentY < height; currentY++)
-        for (var currentX = 0; currentX < width; currentX++)
+        var lowerPosition = new Position(position.x, position.y + upperSize.height);
+        var lowerSize = new Size(size.width, size.height - upperSize.height);
+
+        var upperEnumerator = upperDrawer.Draw(upperPosition, upperSize).GetEnumerator();
+        var lowerEnumerator = lowerDrawer.Draw(lowerPosition, lowerSize).GetEnumerator();
+
+        for (var currentY = 0; currentY < size.height; currentY++)
+        for (var currentX = 0; currentX < size.width; currentX++)
         {
-            var currentEnumerator = currentY < upperHeight ? upperEnumerator : lowerEnumerator;
+            var currentEnumerator = currentY < upperSize.height ? upperEnumerator : lowerEnumerator;
             currentEnumerator.MoveNext();
             yield return currentEnumerator.Current;
         }

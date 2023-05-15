@@ -1,6 +1,6 @@
 ﻿namespace ShigLe.TUITools.Drawers;
 
-public class Text : IDrawer
+public class Text : IDrawer, IDrawable
 {
     public readonly string text;
 
@@ -9,12 +9,22 @@ public class Text : IDrawer
         this.text = text;
     }
 
-    public IEnumerable<char> Draw(int x, int y, int width, int height)
+    public IDrawer GetDrawer()
     {
-        for (var currentY = 0; currentY < height; currentY++)
-        for (var currentX = 0; currentX < width; currentX++)
+        return this;
+    }
+
+    public BoxConstraints GetConstraints(Size size)
+    {
+        return new BoxConstraints();
+    }
+
+    public IEnumerable<char> Draw(Position position, Size size)
+    {
+        for (var currentY = 0; currentY < size.height; currentY++)
+        for (var currentX = 0; currentX < size.width; currentX++)
         {
-            var index = currentY * width + currentX;
+            var index = currentY * size.width + currentX;
             var returnChar = ' ';
 
             if (text.Length > index) returnChar = text[index];

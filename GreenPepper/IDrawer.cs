@@ -2,5 +2,7 @@
 
 public interface IDrawer
 {
-    IEnumerable<char> Draw(int x, int y, int width, int height);
+    BoxConstraints GetConstraints(Size size);
+
+    IEnumerable<char> Draw(Position position, Size size);
 }

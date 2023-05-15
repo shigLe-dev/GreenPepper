@@ -18,7 +18,7 @@ public class HorizontalContainer : IDrawer, IDrawable
 
     public BoxConstraints GetConstraints(Size size)
     {
-        return new BoxConstraints();
+        return BoxConstraints.Loose(size);
     }
 
     public IEnumerable<char> Draw(Position position, Size size)

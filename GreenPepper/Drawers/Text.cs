@@ -16,7 +16,7 @@ public class Text : IDrawer, IDrawable
 
     public BoxConstraints GetConstraints(Size size)
     {
-        return BoxConstraints.Loose(size);
+        return new BoxConstraints(text.);
     }
 
     public IEnumerable<char> Draw(Position position, Size size)
